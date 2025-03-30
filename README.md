@@ -16,7 +16,7 @@ Tech Stack used in this Project
 
 <h3>Design Flow:</h3>
 <p>
-
+```
 Data Pipeline
 ├── Windows Local Machine
 │   └── SQL Server Database (Source System)
@@ -40,5 +40,5 @@ Data Pipeline
     │   └── Receives transformed data from DBT Core
     └── Looker Studio
         └── Captures data from Transformation Layer for BI Visuals
-
+```
  </p>
