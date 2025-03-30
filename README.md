@@ -7,7 +7,7 @@ Tech Stack used in this Project
       <td align="center"><img src="./logo/Python-logo.png" width="50"/></td>
       <td align="center"><img src="./logo/airflow-svgrepo-com.png" width="50"/></td>
       <td align="center"><img src="./logo/dbt-svgrepo-com.png" width="50"/></td>
-      <td align="center"><img src="./logo/BigQueryLogo.png" width="50"/></td>
+      <td align="center"><img src="./logo/BigQueryLogo2.png" width="50"/></td>
       <td align="center"><img src="./logo/github-svgrepo-com.png" width="50"/></td>
       <td align="center"><img src="./logo/vscode-svgrepo-com.png" width="50"/></td>
     </tr>
@@ -15,7 +15,7 @@ Tech Stack used in this Project
 </div>
 
 <h3>Design Flow:</h3>
-<p>
+
 ```
 Data Pipeline
 ├── Windows Local Machine
@@ -41,4 +41,3 @@ Data Pipeline
     └── Looker Studio
         └── Captures data from Transformation Layer for BI Visuals
 ```
- </p>
