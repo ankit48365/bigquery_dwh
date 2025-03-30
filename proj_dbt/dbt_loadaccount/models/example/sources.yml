@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: load
+    database: pocloadaccount
+    schema: load
+    tables:
+      - name: account
