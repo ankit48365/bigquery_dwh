@@ -41,61 +41,65 @@ models:
           - unique
 
 
-semantic_models:
-  - name: semantic_on_denormalize
-    defaults:
-      agg_time_dimension: date
-    description: |
-      order grain mart.
-    model: ref('denormalize')
-    entities:
-      - name: order_id
-        expr: order_id
-        type: foreign
-      - name: order_details_id
-        expr: order_details_id
-        type: primary
-      - name: pizza_id
-        expr: pizza_id
-        type: foreign
-      - name: pizza_type_id
-        expr: pizza_type_id
-        type: foreign
-    dimensions:
-      - name: date
-        type: time
-        type_params:
-          time_granularity: day
-      - name: name
-        type: categorical
-      - name: category
-        type: categorical
-      - name: ingredients
-        type: categorical
-      - name: size
-        type: categorical
-    measures:
-      - name: quantity
-        description: total quantity of pizza
-        agg: sum
-      - name: price
-        description: total cost of pizza
-        agg: sum
 
-metrics:
-  - name: order_count
-    description: Sum of total order count. using measure - quantity
-    type: simple
-    label: Order Count
-    type_params:
-      measure: quantity
 
-  - name: order_sales
-    description: Sum of total order sales amount. using measure - price
-    type: simple
-    label: Order Sales Total
-    type_params:
-      measure: price
+# semantic_models:
+#   - name: semantic_on_denormalize
+#     defaults:
+#       agg_time_dimension: date
+#     description: |
+#       order grain mart.
+#     # model: ref('denormalize')
+#     model: denormalize
+
+#     entities:
+#       - name: order_id
+#         expr: order_id
+#         type: foreign
+#       - name: order_details_id
+#         expr: order_details_id
+#         type: primary
+#       - name: pizza_id
+#         expr: pizza_id
+#         type: foreign
+#       - name: pizza_type_id
+#         expr: pizza_type_id
+#         type: foreign
+#     dimensions:
+#       - name: date
+#         type: time
+#         type_params:
+#           time_granularity: day
+#       - name: name
+#         type: categorical
+#       - name: category
+#         type: categorical
+#       - name: ingredients
+#         type: categorical
+#       - name: size
+#         type: categorical
+#     measures:
+#       - name: quantity
+#         description: total quantity of pizza
+#         agg: sum
+#       - name: price
+#         description: total cost of pizza
+#         agg: sum
+
+# metrics:
+#   - name: order_count
+#     description: Sum of total order count. using measure - quantity
+#     type: simple
+#     label: Order Count
+#     type_params:
+#       measure: quantity
+
+#   - name: order_sales
+#     description: Sum of total order sales amount. using measure - price
+#     type: simple
+#     label: Order Sales Total
+#     type_params:
+#       measure: price
 
 
 # metrics:
