@@ -57,6 +57,10 @@ models:
 
       - name: bill_amount
         description: "Total amount spent for the order, calculated as price * quantity."
+        meta:
+          metrics:
+            total_profit:
+              type: sum
 
       - name: dbt_DateCreated
         description: Date of DBT record was created
