@@ -1,0 +1,115 @@
+models:
+  - name: denormalize
+    description: all main four tables (order, order_details, pizza_types and pizzas) are flattened (denormalized) in this table.
+    columns:
+      - name: order_id
+        description: Unique Order ID of a single order, but here in this table will have multiple counts as single order can have multiple order details
+      - name: date
+        description: date of order
+      - name: time
+        description: time of order
+      - name: order_details_id
+        description: works as primary key for this table as its always unique (ex - one single order ID can have multiple order details ID per order ID)
+      - name: pizza_id
+        description: short name with suffix of size like bbq_chkn will be bbq_chn_l or bbq_ckn_s
+      - name: pizza_type_id
+        description: short unique name of pizza
+      - name: name
+        description: name of Product (for menu items), (ex "THE THAI CHICKEN PIZZA","THE GREEN GARDEN PIZZA")
+      - name: category
+        description: categorization between chicken, veggie etc
+      - name: ingredients
+        description: ingredients used in the pizza
+      - name: quantity
+        description: number of pizza per order_details_id
+      - name: size
+        description: size of pizza, S, M , L or XL
+      - name: price
+        description: price of single unit of pizza
+      - name: dbt_DateCreated
+        description: Date of DBT record was created
+      - name: dbt_TimeCreated
+        description: Time of DBT record was created
+
+  - name: metricflow_time_spine
+    description: A daily time spine for MetricFlow, ranging from 2023-01-01 to 2026-01-01.
+    columns:
+      - name: date_day
+        description: A continuous range of dates at the day granularity.
+        tests:
+          - not_null
+          - unique
+
+
+semantic_models:
+  - name: semantic_on_denormalize
+    defaults:
+      agg_time_dimension: date
+    description: |
+      order grain mart.
+    model: ref('denormalize')
+    entities:
+      - name: order_id
+        expr: order_id
+        type: foreign
+      - name: order_details_id
+        expr: order_details_id
+        type: primary
+      - name: pizza_id
+        expr: pizza_id
+        type: foreign
+      - name: pizza_type_id
+        expr: pizza_type_id
+        type: foreign
+    dimensions:
+      - name: date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: name
+        type: categorical
+      - name: category
+        type: categorical
+      - name: ingredients
+        type: categorical
+      - name: size
+        type: categorical
+    measures:
+      - name: quantity
+        description: total quantity of pizza
+        agg: sum
+      - name: price
+        description: total cost of pizza
+        agg: sum
+
+metrics:
+  - name: order_count
+    description: Sum of total order count. using measure - quantity
+    type: simple
+    label: Order Count
+    type_params:
+      measure: quantity
+
+  - name: order_sales
+    description: Sum of total order sales amount. using measure - price
+    type: simple
+    label: Order Sales Total
+    type_params:
+      measure: price
+
+
+# metrics:
+#   - name: Total_Sales_byCount
+#     label: salesbycount
+#     description: Total sales by count of pizza
+#     type: simple
+#     type_params:
+#       measure: quantity
+
+# metrics:
+#   - name: order_total
+#     description: Sum of total order amonunt. Includes tax + revenue.
+#     type: simple
+#     label: Order Total
+#     type_params:
+#       measure: order_total

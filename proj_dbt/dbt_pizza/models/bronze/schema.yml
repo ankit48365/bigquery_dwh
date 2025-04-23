@@ -1,0 +1,27 @@
+version: 1
+
+sources:
+  - name: src_pizza
+    schema: pizza
+    description: Source system schema description
+    tables:
+      - name: pizzas
+        description: Each record is a unique pizza price by its size - source table loaded from sql server to postgres
+
+      - name: pizza_types
+        description: Each record is Pizza type categorization and its ingredients - source table loaded from sql server to postgres
+
+      - name: order_details
+        description: order details table is child table to order table, where it shows details of a single order like pizza type and its quantity
+
+      - name: orders
+        description: parent order table, here it only shows time and date per order given
+        freshness:
+          warn_after:
+            count: 2
+            period: day
+          error_after:
+            count: 8
+            period: day
+        loaded_at_field: CAST(date AS TIMESTAMP)
+ 

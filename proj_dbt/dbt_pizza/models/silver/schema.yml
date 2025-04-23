@@ -1,0 +1,107 @@
+version: 1
+
+models:
+
+  - name: stg_pizzas
+    description: Each record is a unique pizza price by its size.
+    columns:
+      - name: size
+        description: The size of the pizza
+        tests:
+        - not_null
+        - accepted_values:
+            values: ['L','M','S','XL']
+      - name: price
+        description: The price of the pizza
+        tests:
+        - not_null
+        - macro_price_range:
+            min_value: 8
+            max_value: 100
+
+      - name: pizza_id
+        description: Unique Identifier - Pizza type ID (distinguish Size)
+        tests:
+        - unique
+        - not_null
+
+      - name: pizza_type_id
+        description: General Pizza ID (does not distinguish Size)
+        tests:
+        - not_null
+        - relationships:
+            to: ref('stg_pizza_types')
+            field: pizza_type_id
+
+
+
+
+  - name: stg_pizza_types
+    description: Each record is Pizza type categorization and its ingredients.
+    columns:
+      - name: name
+        description: The name of the pizza type
+        tests:
+        - not_null
+
+      - name: category
+        description: The category of the pizza type
+        tests:
+        - not_null
+      - name: ingredients
+        description: The ingredients of the pizza type
+        tests:
+        - not_null
+      - name: pizza_type_id
+        description: PK - General Pizza ID (does not distinguish Size)
+        tests:
+        - unique
+        - not_null
+
+
+
+
+  - name: stg_order_details
+    description: order details table is child table to order table, where it shows details of a single order like pizza type and its quantity
+    columns:
+      - name: order_details_id
+        description: order detail ID is a detail of single order ID (order table just hold date and time of that order)
+        tests:
+        - not_null
+      
+      - name: order_id
+        description: fk from orders table, shows one single order per customer (holds time and date in its parent table)
+        tests:
+        - not_null
+        - relationships:
+            to: ref('stg_orders')
+            field: order_id
+      
+      - name: pizza_id
+        description: The ingredients of the pizza type
+        tests:
+        - not_null
+        - relationships:
+            to: ref('stg_pizzas')
+            field: pizza_id
+      - name: pizza_type_id
+        description: PK - General Pizza ID (does not distinguish Size)
+      - name: quantity
+        description: Quantity of Pizza bught in one OrderID
+
+
+  - name: stg_orders
+    description: TBD
+    columns:
+      - name: order_id
+        description: order id just hold date and time
+        tests:
+        - not_null
+      - name: date
+        description: date of order
+
+      - name: time
+        description: Time of order
+
+
+
