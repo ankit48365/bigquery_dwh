@@ -15,6 +15,7 @@ pt.ingredients as ingredients,
 od.quantity as quantity, 
 p.size as size, 
 p.price as price,
+p.price * od.quantity as bill_amount,
 CURRENT_DATE() AS dbt_DateCreated, 
 CURRENT_TIME() AS dbt_TimeCreated
 FROM 

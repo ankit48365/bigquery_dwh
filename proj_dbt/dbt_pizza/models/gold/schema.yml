@@ -5,40 +5,39 @@ models:
       - name: order_id
         description: Unique Order ID of a single order, but here in this table will have multiple counts as single order can have multiple order details
         meta:
-          entity:
-            type: "foreign"
-            label: "orderID"
-            description: "single order ID"
+          metrics:
+            total_order_count:
+              type: count_distinct
       - name: date
         description: date of order
-        meta:
-          dimension:
-            label: "Order Date"
-            description: "Date on which the order was created."
+        # meta:
+        #   dimension:
+        #     label: "Order Date"
+        #     description: "Date on which the order was created."
       - name: time
         description: time of order
       - name: order_details_id
         description: works as primary key for this table as its always unique (ex - one single order ID can have multiple order details ID per order ID)
-        meta:
-          entity:
-            type: "Primary"
-            label: "Unique Key"
-            description: "unique for every record"
+        # meta:
+        #   entity:
+        #     type: "Primary"
+        #     label: "Unique Key"
+        #     description: "unique for every record"
 
       - name: pizza_id
         description: short name with suffix of size like bbq_chkn will be bbq_chn_l or bbq_ckn_s
-        meta:
-          entity:
-            type: "foreign"
-            label: "pizzaID"
-            description: "xxxxxxxxxxxxxx"
+        # meta:
+        #   entity:
+        #     type: "foreign"
+        #     label: "pizzaID"
+        #     description: "xxxxxxxxxxxxxx"
       - name: pizza_type_id
         description: short unique name of pizza
-        meta:
-          entity:
-            type: "foreign"
-            label: "pizzaTypeID"
-            description: "xxxxxxxxxxxxxx"
+        # meta:
+        #   entity:
+        #     type: "foreign"
+        #     label: "pizzaTypeID"
+        #     description: "xxxxxxxxxxxxxx"
       - name: name
         description: name of Product (for menu items), (ex "THE THAI CHICKEN PIZZA","THE GREEN GARDEN PIZZA")
       - name: category
@@ -56,14 +55,9 @@ models:
       - name: price
         description: price of single unit of pizza
 
-      - name: total_spent
+      - name: bill_amount
         description: "Total amount spent for the order, calculated as price * quantity."
-        meta:
-          measure:
-            label: "Total Spent"
-            description: "Sum of the total amount spent for each order."
-            sql: "price * quantity"
-            aggregation: "sum"
+
       - name: dbt_DateCreated
         description: Date of DBT record was created
       - name: dbt_TimeCreated
