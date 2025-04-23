@@ -4,12 +4,17 @@ models:
     columns:
       - name: order_id
         description: Unique Order ID of a single order, but here in this table will have multiple counts as single order can have multiple order details
+        meta:
+          metrics:
+            total_order_count:
+              type: count_distinct
       - name: date
         description: date of order
       - name: time
         description: time of order
       - name: order_details_id
         description: works as primary key for this table as its always unique (ex - one single order ID can have multiple order details ID per order ID)
+
       - name: pizza_id
         description: short name with suffix of size like bbq_chkn will be bbq_chn_l or bbq_ckn_s
       - name: pizza_type_id
@@ -22,6 +27,10 @@ models:
         description: ingredients used in the pizza
       - name: quantity
         description: number of pizza per order_details_id
+        meta:
+          metrics:
+            total_sales:
+              type: sum
       - name: size
         description: size of pizza, S, M , L or XL
       - name: price
