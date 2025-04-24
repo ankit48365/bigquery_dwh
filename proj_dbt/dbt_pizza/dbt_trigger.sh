@@ -6,12 +6,12 @@ set -e # Exit immediately if a command exits with a non-zero status
 
 
 # Path to the Python interpreter in the virtual environment
-VENV_PATH="${LOAD_PATH}/.venv/"
+VENV_PATH="${LOAD_PATH}proj_dbt/.venv/"
 # echo "VENV_PATH: $(VENV_PATH)"
 
 
 # Path to the Python script to be executed
-SCRIPT_PATH="${LOAD_PATH}/dbt_pizza"
+SCRIPT_PATH="${LOAD_PATH}proj_dbt/dbt_pizza"
 # echo "SCRIPT_PATH: $(SCRIPT_PATH)"
 
 # Activate the virtual environment

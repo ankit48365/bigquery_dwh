@@ -3,10 +3,16 @@
 -- {{ config(materialized='incremental') }}
 {{ config(materialized='table') }}
 
-SELECT order_id, date, time,
-CURRENT_DATE() AS dbt_DateCreated, 
-CURRENT_TIME() AS dbt_TimeCreated
-FROM {{ source('src_pizza', 'orders') }}
+WITH base_orders AS (
+    SELECT order_id, date, time, CONCAT(date, ' ', time) AS datetime_column, CURRENT_DATE() AS dbt_DateCreated, CURRENT_TIME() AS dbt_TimeCreated
+    FROM {{ source('src_pizza', 'orders') }}
+)
+
+SELECT order_id, date, time, DATETIME(TIMESTAMP(datetime_column), "America/New_York") AS datetime_timestamp, dbt_DateCreated, dbt_TimeCreated FROM base_orders
+
+-- DATETIME(TIMESTAMP(datetime_column), "America/New_York")
+-- CAST(datetime_column AS TIMESTAMP)
+
 
 -- bigquery in free tier, does not allow incremental load with below error  
 

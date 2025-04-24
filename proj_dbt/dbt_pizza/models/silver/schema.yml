@@ -103,5 +103,10 @@ models:
       - name: time
         description: Time of order
 
+      - name: datetime_timestamp
+        description: calculated column by concatenating dat and time column in this table
+
+
+
 
 
