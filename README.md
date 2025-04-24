@@ -9,7 +9,7 @@ Tech Stack used in this Project
       <td align="center"><img src="./logo/dbt-svgrepo-com.png" width="50"/></td>
       <td align="center"><img src="./logo/BigQueryLogo2.png" width="50"/></td>
       <td align="center"><img src="./logo/github-svgrepo-com.png" width="50"/></td>
-      <td align="center"><img src="./logo/vscode-svgrepo-com.png" width="50"/></td>
+      <td align="center"><img src="./logo/lightdashlogo.png" width="50"/></td>
     </tr>
   </table>
 </div>
@@ -34,10 +34,24 @@ Data Pipeline
 │           └── Transforms data and moves to Transformation Layer
 │
 └── Big Query Cloud
-    ├── Staging Layer
+    ├── Bronze: Landing Layer
     │   └── Receives CSV files from Big Query CLI
-    ├── Transformation Layer
+    ├── Silver : Staging Layer
     │   └── Receives transformed data from DBT Core
-    └── Looker Studio
-        └── Captures data from Transformation Layer for BI Visuals
+    └── Gold: denormalized layer integrated with Lightdash
+        └── Creates BI visuals and defines metrics by leveraging schema.yml files from dbt GitHub repository
 ```
+
+<h3>SNAPSHOTS:</h3>
+
+Airflow - Orchestration
+
+![Airflow Data Pipeline Diagram](logo/Airflow_bquery.png "Data Pipeline Overview")
+
+BigQuery - Data Platform
+
+![Big Query Data Platform](logo/BigQuery_Dahboard.png "Data Platform Overview")
+
+LightDash - Analytics Interface
+
+![LightDash Analytics](logo/lighdash_dashboard.png "Anlytics Interface Overview")
