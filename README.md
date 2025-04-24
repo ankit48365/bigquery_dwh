@@ -9,7 +9,6 @@ Tech Stack used in this Project
       <td align="center"><img src="./logo/dbt-svgrepo-com.png" width="50"/></td>
       <td align="center"><img src="./logo/BigQueryLogo2.png" width="50"/></td>
       <td align="center"><img src="./logo/github-svgrepo-com.png" width="50"/></td>
-      <td align="center"><img src="./logo/lightdashlogo.png" width="50"/></td>
       <td align="center"><a href="https://app.lightdash.cloud/"><img src="./logo/lightdashlogo.png" width="50"/></a></td>
     </tr>
   </table>
