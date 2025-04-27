@@ -60,3 +60,11 @@ BigQuery - Data Platform
 LightDash - Analytics Interface
 
 ![LightDash Analytics](logo/lighdash_dashboard.png "Anlytics Interface Overview")
+
+Reverse Data Push
+
+```
+bq extract --destination_format=CSV pizza.denormalize gs://anki_pizza_bucket/denormalize.csv
+
+gsutil cp gs://anki_pizza_bucket/denormalize.csv denormalize.csv
+```
