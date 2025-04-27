@@ -3,7 +3,7 @@ Tech Stack used in this Project
 <div style="text-align: center;">
   <table>
     <tr>
-      <td align="center"><img src="./logo/microsoft-sql-server-log.png" width="50"/></td>
+      <td align="center"><img src="./logo/sqlserver_withname.png" width="50"/></td>
       <td align="center"><img src="./logo/Python-logo.png" width="50"/></td>
       <td align="center"><img src="./logo/airflow-svgrepo-com.png" width="50"/></td>
       <td align="center"><img src="./logo/dbt-svgrepo-com.png" width="50"/></td>
@@ -14,9 +14,11 @@ Tech Stack used in this Project
   </table>
 </div>
 
+<h4>Tech Integration Diagram:</h4>
 
+![Tech Integration Diagram](logo/bigquery_dataplatform.png "Data Pipeline Overview")
 
-<h3>Design Flow:</h3>
+<h4>Design Flow:</h4>
 
 ```
 Data Pipeline
@@ -44,7 +46,7 @@ Data Pipeline
         └── Creates BI visuals and defines metrics by leveraging schema.yml files from dbt GitHub repository
 ```
 
-<h3>SNAPSHOTS:</h3>
+<h4>SNAPSHOTS:</h4>
 
 Airflow - Orchestration
 
