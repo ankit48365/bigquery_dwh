@@ -16,7 +16,7 @@ Tech Stack used in this Project
 
 <h4>Tech Integration Diagram:</h4>
 
-![Tech Integration Diagram](logo/bigquery_dataplatform.png "Data Pipeline Overview")
+![Tech Integration Diagram](logo/bigquery_dataplatform_white.png "Data Pipeline Overview")
 
 <h4>Design Flow:</h4>
 
