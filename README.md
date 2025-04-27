@@ -10,13 +10,14 @@ Tech Stack used in this Project
       <td align="center"><a href="https://console.cloud.google.com/"><img src="./logo/BigQueryLogo2.png" width="50"/></td>
       <td align="center"><img src="./logo/github-svgrepo-com.png" width="50"/></td>
       <td align="center"><a href="https://app.lightdash.cloud/"><img src="./logo/lightdashlogo.png" width="50"/></a></td>
+      <td align="center"><img src="./logo/Tableau-Logo2.png" width="50"/></td>
     </tr>
   </table>
 </div>
 
 <h4>Tech Integration Diagram:</h4>
 
-![Tech Integration Diagram](logo/bigquery_dataplatform_white.png "Data Pipeline Overview")
+![Tech Integration Diagram](logo/bigquery_dataplatform2_white.png "Data Pipeline Overview")
 
 <h4>Design Flow:</h4>
 
