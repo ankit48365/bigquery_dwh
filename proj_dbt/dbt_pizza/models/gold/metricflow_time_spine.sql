@@ -14,5 +14,5 @@ final as (
     from days
 )
 
--- noqa: disable
+-- noqa: disable=TMP,PRS
 select * from final
