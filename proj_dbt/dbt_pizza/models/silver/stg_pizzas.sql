@@ -16,5 +16,3 @@ FROM {{ source('src_pizza', 'pizzas') }}
 -- {% if target.name == 'test' %}
 -- where pizza_type_id in ('bbq_ckn','big_meat','brie_carre','calabrese','cali_ckn','ckn_alfredo','ckn_pesto','classic_dlx','five_cheese')
 -- {% endif %}
-
-

@@ -15,8 +15,10 @@ INNER JOIN
 GROUP BY
     s.salesman_id, s.name, DATE_TRUNC(d.date, MONTH), s.salary
 ORDER BY
-    year_month ASC, profit DESC
+    year_month ASC, profit DESC -- noqa: RF01
+
 
 --salesman_track.sql
--- This model tracks the performance of salesmen over time, aggregating their profits by month.
+-- This model tracks the performance of salesmen over time, 
+-- aggregating their profits by month.
 -- It joins the denormalized sales data with the salesmen information
