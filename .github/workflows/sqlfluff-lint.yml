@@ -23,7 +23,10 @@ jobs:
 
       - name: Install SQLFluff
         run: pip install sqlfluff sqlfluff-templater-dbt
-
+        
+      - name: List repo structure for debugging
+        run: ls -R
+        
       - name: Change to dbt project directory
         run: cd bigquery_dwh/proj_dbt/dbt_pizza  # Adjust based on your repo structure
 
