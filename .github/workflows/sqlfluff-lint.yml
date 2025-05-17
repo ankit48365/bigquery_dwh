@@ -31,4 +31,5 @@ jobs:
         run: cd ./proj_dbt/dbt_pizza  # Adjust based on your repo structure
 
       - name: Run SQLFluff linting
-        run: sqlfluff lint models/
+        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
+
