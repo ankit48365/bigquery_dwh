@@ -14,4 +14,5 @@ final as (
     from days
 )
 
+-- noqa: disable
 select * from final
