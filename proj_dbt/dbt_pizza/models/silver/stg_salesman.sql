@@ -1,14 +1,14 @@
-
 -- {{ config(materialized='view') }}
 {{ config(materialized='table') }}
 
 
-SELECT salesman_id,
-UPPER(name) AS name,
-salary, 
-UPPER(title) AS title,
-CURRENT_DATE() AS dbt_DateCreated, 
-CURRENT_TIME() AS dbt_TimeCreated
+SELECT
+    salesman_id,
+    salary,
+    UPPER(name) AS name,
+    UPPER(title) AS title,
+    CURRENT_DATE() AS dbt_datecreated,
+    CURRENT_TIME() AS dbt_timecreated
 
 FROM {{ source('src_pizza', 'salesman') }}
 
