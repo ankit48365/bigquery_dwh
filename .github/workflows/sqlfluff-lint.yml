@@ -1,0 +1,31 @@
+name: SQLFluff Lint
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main  
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install SQLFluff
+        run: pip install sqlfluff sqlfluff-templater-dbt
+
+      - name: Change to dbt project directory
+        run: cd /proj_dbt/dbt_pizza  # Adjust based on your repo structure
+
+      - name: Run SQLFluff linting
+        run: sqlfluff lint models/
