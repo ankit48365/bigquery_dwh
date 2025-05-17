@@ -103,8 +103,33 @@ models:
       - name: time
         description: Time of order
 
+      - name: fk_salesman
+        description: foreign key from salesman table, shows which salesman made this order
+        tests:
+        - not_null
+        - relationships:
+            to: ref('stg_salesman')
+            field: salesman_id
       - name: datetime_timestamp
         description: calculated column by concatenating dat and time column in this table
+
+
+
+  - name: stg_salesman
+    description: salesman ID, name, designation and salary, refrenced in order table as each order is tied up with some salesman making a sale.
+    columns:
+      - name: salesman_id
+        description: unique integer ID for each salesman
+        tests:
+        - unique
+        - not_null
+      - name: name
+        description: name of the salesman
+
+      - name: salary
+        description: salary of the salesman in integer
+      - name: title
+        description: title of the salesmen such as sales, manager, cashier etc
 
 
 
