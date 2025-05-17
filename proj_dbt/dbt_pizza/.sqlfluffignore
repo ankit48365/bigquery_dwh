@@ -3,4 +3,4 @@ macros/
 dbt_packages/
 target/
 
-./models/gold/metricflow_time_spine.sql
+./proj_dbt/dbt_pizza/models/gold/metricflow_time_spine.sql
