@@ -4,9 +4,7 @@
 with days as (
 
     {{
-        dbt.date_spine(
-            'day',
-            "PARSE_DATE('%m/%d/%Y', '01/01/2023')",
+        dbt.date_spine('day',"PARSE_DATE('%m/%d/%Y', '01/01/2023')",
             "PARSE_DATE('%m/%d/%Y', '01/01/2026')"
         )
     }}),

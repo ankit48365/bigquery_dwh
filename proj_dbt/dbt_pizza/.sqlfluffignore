@@ -2,3 +2,5 @@ analysis/
 macros/
 dbt_packages/
 target/
+
+models/gold/salesman_track.sql
