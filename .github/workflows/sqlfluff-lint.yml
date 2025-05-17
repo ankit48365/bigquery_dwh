@@ -28,7 +28,7 @@ jobs:
         run: ls -R
         
       - name: Change to dbt project directory
-        run: cd bigquery_dwh/proj_dbt/dbt_pizza  # Adjust based on your repo structure
+        run: cd ./proj_dbt/dbt_pizza  # Adjust based on your repo structure
 
       - name: Run SQLFluff linting
         run: sqlfluff lint models/
