@@ -1,38 +1,37 @@
-
 {{ config(materialized='table') }}
 
-SELECT 
-o.order_id as order_id, 
-o.date as date, 
-o.time as time,
-o.fk_salesman as fk_salesman,
-o.datetime_timestamp as datetime_timestamp,
-od.order_details_id as order_details_id, 
-p.pizza_id as pizza_id, 
-pt.pizza_type_id as pizza_type_id, 
-pt.name as name, 
-pt.category as category, 
-pt.ingredients as ingredients, 
-od.quantity as quantity, 
-p.size as size, 
-p.price as price,
-p.price * od.quantity as bill_amount,
-CURRENT_DATE() AS dbt_DateCreated, 
-CURRENT_TIME() AS dbt_TimeCreated
-FROM 
-    {{ ref('stg_orders') }} o
-JOIN 
-    {{ ref('stg_order_details') }} od 
-ON 
-    o.order_id = od.order_id
-JOIN 
-    {{ ref('stg_pizzas') }} p
-ON 
-    od.pizza_id = p.pizza_id
-JOIN 
-    {{ ref('stg_pizza_types') }} pt
-ON 
-    p.pizza_type_id = pt.pizza_type_id
+SELECT
+    o.order_id,
+    o.date,
+    o.time,
+    o.fk_salesman,
+    o.datetime_timestamp,
+    od.order_details_id,
+    p.pizza_id,
+    pt.pizza_type_id,
+    pt.name,
+    pt.category,
+    pt.ingredients,
+    od.quantity,
+    p.size,
+    p.price,
+    p.price * od.quantity AS bill_amount,
+    CURRENT_DATE() AS dbt_datecreated,
+    CURRENT_TIME() AS dbt_timecreated
+FROM
+    {{ ref('stg_orders') }} AS o
+INNER JOIN
+    {{ ref('stg_order_details') }} AS od
+    ON
+        o.order_id = od.order_id
+INNER JOIN
+    {{ ref('stg_pizzas') }} AS p
+    ON
+        od.pizza_id = p.pizza_id
+INNER JOIN
+    {{ ref('stg_pizza_types') }} AS pt
+    ON
+        p.pizza_type_id = pt.pizza_type_id
 -- JOIN 
 --     {{ ref('stg_salesman') }} sm
 -- ON 

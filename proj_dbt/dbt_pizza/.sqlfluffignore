@@ -1,0 +1,6 @@
+analysis/
+macros/
+dbt_packages/
+target/
+
+proj_dbt/dbt_pizza/models/gold/metricflow_time_spine.sql

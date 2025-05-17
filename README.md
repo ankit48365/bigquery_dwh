@@ -68,3 +68,9 @@ bq extract --destination_format=CSV pizza.denormalize gs://anki_pizza_bucket/den
 
 gsutil cp gs://anki_pizza_bucket/denormalize.csv denormalize.csv
 ```
+
+lint 
+
+```
+sqlfluff lint models/
+sqlfluff fix models/
