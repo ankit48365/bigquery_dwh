@@ -3,7 +3,7 @@ name: SQLFluff Lint
 on:
   push:
     branches:
-      - main  
+      - 5-integrate-sql-linting  
   pull_request:
     branches:
       - main  
