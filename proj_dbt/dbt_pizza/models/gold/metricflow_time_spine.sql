@@ -1,3 +1,4 @@
+{# noqa: disable=TMP,PRS #}
 {{ config(materialized='table') }}
 
 
@@ -14,5 +15,4 @@ final as (
     from days
 )
 
--- noqa: disable=TMP,PRS
 select * from final
