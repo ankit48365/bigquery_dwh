@@ -17,6 +17,9 @@ models:
       - name: time
         description: time of order
 
+      - name: fk_salesman
+        description: salesman ID who took the order
+
       - name: datetime_timestamp
         description: calculated in stg_order byu concat of date and time column
         meta:
@@ -25,6 +28,7 @@ models:
               type: min
             time_of_last_order:
               type: max
+
 
       - name: order_details_id
         description: works as primary key for this table as its always unique (ex - one single order ID can have multiple order details ID per order ID)

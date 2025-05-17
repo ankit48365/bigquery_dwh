@@ -24,4 +24,7 @@ sources:
             count: 8
             period: day
         loaded_at_field: CAST(date AS TIMESTAMP)
+      
+      - name: salesman        
+        description: salesman ID, name, designation and salary, refrenced in order table as each order is tied up with some salesman making a sale.
  

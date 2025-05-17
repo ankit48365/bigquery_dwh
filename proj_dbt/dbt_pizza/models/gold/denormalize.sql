@@ -5,8 +5,8 @@ SELECT
 o.order_id as order_id, 
 o.date as date, 
 o.time as time,
+o.fk_salesman as fk_salesman,
 o.datetime_timestamp as datetime_timestamp,
-
 od.order_details_id as order_details_id, 
 p.pizza_id as pizza_id, 
 pt.pizza_type_id as pizza_type_id, 
@@ -33,3 +33,7 @@ JOIN
     {{ ref('stg_pizza_types') }} pt
 ON 
     p.pizza_type_id = pt.pizza_type_id
+-- JOIN 
+--     {{ ref('stg_salesman') }} sm
+-- ON 
+--     o.fk_salesman = sm.salesman_id

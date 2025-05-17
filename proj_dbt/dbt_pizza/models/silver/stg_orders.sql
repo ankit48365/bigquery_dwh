@@ -4,11 +4,11 @@
 {{ config(materialized='table') }}
 
 WITH base_orders AS (
-    SELECT order_id, date, time, CONCAT(date, ' ', time) AS datetime_column, CURRENT_DATE() AS dbt_DateCreated, CURRENT_TIME() AS dbt_TimeCreated
+    SELECT order_id, date, time, fk_salesman, CONCAT(date, ' ', time) AS datetime_column, CURRENT_DATE() AS dbt_DateCreated, CURRENT_TIME() AS dbt_TimeCreated
     FROM {{ source('src_pizza', 'orders') }}
 )
 
-SELECT order_id, date, time, DATETIME(TIMESTAMP(datetime_column), "America/New_York") AS datetime_timestamp, dbt_DateCreated, dbt_TimeCreated FROM base_orders
+SELECT order_id, date, time, fk_salesman, DATETIME(TIMESTAMP(datetime_column), "America/New_York") AS datetime_timestamp, dbt_DateCreated, dbt_TimeCreated FROM base_orders
 
 -- DATETIME(TIMESTAMP(datetime_column), "America/New_York")
 -- CAST(datetime_column AS TIMESTAMP)
