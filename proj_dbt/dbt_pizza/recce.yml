@@ -1,0 +1,17 @@
+# Preset Checks
+# Please see https://docs.datarecce.io/features/preset-checks/
+checks:
+- name: Row count diff
+  description: Check the row count diff for all table models.
+  type: row_count_diff
+  params:
+    select: state:modified,config.materialized:table
+- name: Schema diff
+  description: Check the schema diff for all nodes.
+  type: schema_diff
+
+# below didnt make any changes
+
+# dbt:
+#   manifest_path: /home/ankiz/Documents/mygit/bigquery_dwh/proj_dbt/dbt_pizza/target/manifest.json
+#   baseline_manifest_path: /home/ankiz/Documents/mygit/bigquery_dwh/proj_dbt/dbt_pizza/target/manifest.json

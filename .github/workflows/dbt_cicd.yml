@@ -1,0 +1,51 @@
+name: DBT CICD
+
+on:
+  push:
+    branches:
+      - 7-integrate-piperider  
+  pull_request:
+    branches:
+      - main  
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install SQLFluff
+        run: pip install sqlfluff sqlfluff-templater-dbt
+        
+      - name: Run SQLFluff linting
+        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
+
+  recce-summary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Recce
+        run: pip install recce
+
+      - name: Run Recce validation
+        run: recce run --output recce-state.json
+        working-directory: ./proj_dbt/dbt_pizza/
+
+      - name: Generate Recce summary
+        run: recce summary recce-state.json
+        working-directory: ./proj_dbt/dbt_pizza/

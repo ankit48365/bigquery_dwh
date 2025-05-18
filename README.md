@@ -15,6 +15,12 @@ Tech Stack used in this Project
   </table>
 </div>
 
+<h4>History</h4>
+
+5/17/25 : PR salesman_track.sql added 
+5/17/25 : PR 5 integrate sql linting added
+
+
 <h4>Tech Integration Diagram:</h4>
 
 ![Tech Integration Diagram](logo/bigquery_dataplatform2_white.png "Data Pipeline Overview")
@@ -74,3 +80,4 @@ lint
 ```
 sqlfluff lint models/
 sqlfluff fix models/
+```
