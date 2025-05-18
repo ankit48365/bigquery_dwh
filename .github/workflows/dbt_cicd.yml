@@ -21,36 +21,48 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install SQLFluff
-        run: pip install sqlfluff sqlfluff-templater-dbt
+      - name: Debug GitHub Workspace
+        run: echo "GITHUB_WORKSPACE is at: $GITHUB_WORKSPACE"
 
-      - name: Set dbt environment paths
-        run: |
-          export DBT_PROFILES_DIR=$GITHUB_WORKSPACE/proj_dbt
-          export DBT_PROJECT_DIR=$GITHUB_WORKSPACE/proj_dbt/dbt_pizza
+      # - name: Install SQLFluff
+      #   run: pip install sqlfluff sqlfluff-templater-dbt
+
+      # - name: Set dbt environment paths
+      #   run: |
+      #     export DBT_PROFILES_DIR=$GITHUB_WORKSPACE/proj_dbt
+      #     export DBT_PROJECT_DIR=$GITHUB_WORKSPACE/proj_dbt/dbt_pizza
         
-      - name: Debug directory structure
-        run: ls -R $GITHUB_WORKSPACE
+      # - name: Debug directory structure
+      #   run: ls -R $GITHUB_WORKSPACE
 
-      - name: Run SQLFluff linting
-        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
+      # - name: Run SQLFluff linting
+      #   run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
 
-  recce-summary:
-    runs-on: ubuntu-latest
+  # recce-summary:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.12"
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: "3.12"
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install packaging dbt-core dbt-bigquery recce agate
+  #     - name: Install dependencies
+  #       run: |
+  #         pip install --upgrade pip
+  #         pip install packaging dbt-core dbt-bigquery recce agate
+
+  #     - name: Generate Recce summary
+  #       run: recce summary recce-state.json
+  #       working-directory: ./proj_dbt/dbt_pizza/
+
+#####   above this runs, but was disabled for testing
+
+
+
 
 
       # - name: Run dbt compilation (required for Recce)
@@ -61,9 +73,7 @@ jobs:
       #   run: recce run --output recce-state.json
       #   working-directory: ./proj_dbt/dbt_pizza/
 
-      - name: Generate Recce summary
-        run: recce summary recce-state.json
-        working-directory: ./proj_dbt/dbt_pizza/
+
 
       #  run: recce run --output recce-state.json --profiles-dir ./proj_dbt
       # pip install packaging dbt-core dbt-bigquery recce agate
