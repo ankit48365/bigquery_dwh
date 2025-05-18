@@ -30,7 +30,7 @@ jobs:
           ls -R $RUNNER_WORKSPACE
 
       - name: Install SQLFluff
-        run: pip install sqlfluff sqlfluff-templater-dbt
+        run: pip install sqlfluff sqlfluff-templater-dbt dbt-bigquery
 
       - name: Set dbt environment variables persistently
         run: |
