@@ -21,8 +21,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Debug GitHub Workspace
-        run: echo "GITHUB_WORKSPACE is at: $GITHUB_WORKSPACE"
+      - name: Debug Environment Variables
+        run: env
+      # - name: Debug GitHub Workspace
+      #   run: echo "GITHUB_WORKSPACE is at: $GITHUB_WORKSPACE"
 
       # - name: Install SQLFluff
       #   run: pip install sqlfluff sqlfluff-templater-dbt
