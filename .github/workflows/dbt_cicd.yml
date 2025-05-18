@@ -23,20 +23,26 @@ jobs:
 
       # - name: Debug Environment Variables
       #   run: env
- 
-      - name: Install SQLFluff
-        run: pip install sqlfluff sqlfluff-templater-dbt
 
-      - name: Set dbt paths
+      - name: Debug GitHub Actions Workspace
         run: |
-          export DBT_PROFILES_DIR=/home/runner/work/bigquery_dwh/proj_dbt
-          export DBT_PROJECT_DIR=/home/runner/work/bigquery_dwh/proj_dbt/dbt_pizza
-        
-      - name: Verify dbt files
-        run: ls -R /home/runner/work/bigquery_dwh/proj_dbt/dbt_pizza
+          echo "RUNNER_WORKSPACE is at: $RUNNER_WORKSPACE"
+          ls -R $RUNNER_WORKSPACE
 
-      - name: Run SQLFluff linting
-        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
+
+      # - name: Install SQLFluff
+      #   run: pip install sqlfluff sqlfluff-templater-dbt
+
+      # - name: Set dbt paths
+      #   run: |
+      #     export DBT_PROFILES_DIR=/home/runner/work/bigquery_dwh/proj_dbt
+      #     export DBT_PROJECT_DIR=/home/runner/work/bigquery_dwh/proj_dbt/dbt_pizza
+        
+      # - name: Verify dbt files
+      #   run: ls -R /home/runner/work/bigquery_dwh/proj_dbt/dbt_pizza
+
+      # - name: Run SQLFluff linting
+      #   run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
 
   # recce-summary:
   #   runs-on: ubuntu-latest
