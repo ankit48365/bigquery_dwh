@@ -23,7 +23,15 @@ jobs:
 
       - name: Install SQLFluff
         run: pip install sqlfluff sqlfluff-templater-dbt
+
+      - name: Set dbt environment paths
+        run: |
+          export DBT_PROFILES_DIR=$GITHUB_WORKSPACE/proj_dbt
+          export DBT_PROJECT_DIR=$GITHUB_WORKSPACE/proj_dbt/dbt_pizza
         
+      - name: Debug directory structure
+        run: ls -R $GITHUB_WORKSPACE
+
       - name: Run SQLFluff linting
         run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
 
