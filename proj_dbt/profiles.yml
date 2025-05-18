@@ -1,0 +1,26 @@
+dbt_loadaccount:
+  outputs:
+    dev:
+      dataset: load
+      job_execution_timeout_seconds: 150
+      job_retries: 1
+      location: northamerica-northeast1
+      method: oauth
+      priority: interactive
+      project: pocloadaccount
+      threads: 4
+      type: bigquery
+  target: dev
+dbt_pizza:
+  outputs:
+    dev:
+      dataset: pizza
+      job_execution_timeout_seconds: 150
+      job_retries: 1
+      location: northamerica-northeast1
+      method: oauth
+      priority: interactive
+      project: pocloadaccount
+      threads: 4
+      type: bigquery
+  target: dev
