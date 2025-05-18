@@ -45,9 +45,11 @@ jobs:
           pip install packaging dbt-core dbt-bigquery recce agate
 
       - name: Run Recce validation
-        run: recce run --output recce-state.json --profiles-dir ./proj_dbt
+        run: recce run --output recce-state.json
         working-directory: ./proj_dbt/dbt_pizza/
 
       # - name: Generate Recce summary
       #   run: recce summary recce-state.json
       #   working-directory: ./proj_dbt/dbt_pizza/
+
+      #  run: recce run --output recce-state.json --profiles-dir ./proj_dbt
