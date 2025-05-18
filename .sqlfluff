@@ -3,5 +3,5 @@ templater = dbt
 dialect = bigquery
 
 [templater.dbt]
-project_dir = $GITHUB_WORKSPACE/proj_dbt/dbt_pizza
-profiles_dir = $GITHUB_WORKSPACE/proj_dbt
+project_dir = /home/runner/work/bigquery_dwh/proj_dbt/dbt_pizza
+profiles_dir = /home/runner/work/bigquery_dwh/proj_dbt
