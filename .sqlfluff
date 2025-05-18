@@ -3,5 +3,5 @@ templater = dbt
 dialect = bigquery
 
 [templater.dbt]
-project_dir = $RUNNER_WORKSPACE/bigquery_dwh/proj_dbt/dbt_pizza
-profiles_dir = $RUNNER_WORKSPACE/bigquery_dwh/proj_dbt
+project_dir = $RUNNER_WORKSPACE/proj_dbt/dbt_pizza
+profiles_dir = $RUNNER_WORKSPACE/proj_dbt
