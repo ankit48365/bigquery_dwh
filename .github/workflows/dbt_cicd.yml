@@ -106,6 +106,9 @@ jobs:
           DBT_PROFILES_DIR: /home/runner/.dbt
           GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
 
+      - name: Run SQLFluff linting
+        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
+
 
       # # Install dbt dependencies
       # - name: Install dbt dependencies
