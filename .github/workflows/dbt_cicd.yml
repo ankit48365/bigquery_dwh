@@ -115,6 +115,26 @@ jobs:
           DBT_PROFILES_DIR: /home/runner/.dbt
           DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
 
+      - name: Install Recce
+        run: |
+          pip install --upgrade pip
+          pip install packaging recce agate
+
+      - name: Run dbt compilation (required for Recce)
+        run: dbt compile
+        working-directory: ./proj_dbt/dbt_pizza
+        env:
+          DBT_PROFILES_DIR: /home/runner/.dbt
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
+
+      - name: Run Recce validation
+        run: recce run --output recce-state.json
+        working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+
+      - name: Generate Recce summary
+        run: recce summary recce-state.json
+        working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+
       # # Install dbt dependencies
       # - name: Install dbt dependencies
       #   run: dbt deps
