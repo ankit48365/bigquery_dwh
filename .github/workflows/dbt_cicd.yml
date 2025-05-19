@@ -54,19 +54,37 @@ jobs:
                 keyfile: ~/service-account-key.json
           EOF
 
+      - name: Verify keyfile creation
+        run: |
+          if [ -f ~/service-account-key.json ]; then
+            echo "Keyfile exists"
+          else
+            echo "Keyfile not found"
+            exit 1
+          fi
+
+      - name: Debug keyfile
+        run: |
+          ls -la ~/service-account-key.json
+          cat ~/service-account-key.json
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
       # Install dbt dependencies
       - name: Install dbt dependencies
         run: dbt deps
         working-directory: ./proj_dbt/dbt_pizza # Adjust if dbt_project is in a subdirectory
 
-      # Run dbt tests
       - name: Run dbt tests
         run: dbt test
         working-directory: ./proj_dbt/dbt_pizza
-
-      # Run dbt build (combines run + test + compile)
-      - name: Run dbt build
-        run: dbt build
-        working-directory: ./proj_dbt/dbt_pizza
         env:
           DBT_PROFILES_DIR: ~/.dbt
+          GOOGLE_APPLICATION_CREDENTIALS: ~/service-account-key.json
+
+      # # Run dbt build (combines run + test + compile)
+      # - name: Run dbt build
+      #   run: dbt build
+      #   working-directory: ./proj_dbt/dbt_pizza
+      #   env:
+      #     DBT_PROFILES_DIR: ~/.dbt
