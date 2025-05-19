@@ -51,7 +51,7 @@ jobs:
                 project: pocloadaccount
                 threads: 4
                 type: bigquery
-                keyfile: ~/service-account-key.json
+                keyfile: /home/runner/service-account-key.json
           EOF
 
       - name: Verify keyfile and profiles.yml
@@ -87,6 +87,16 @@ jobs:
           cat ~/service-account-key.json
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
+
+      - name: Test keyfile with gcloud
+        run: |
+          gcloud auth activate-service-account --key-file=/home/runner/service-account-key.json
+          gcloud config set project pocloadaccount
+          bq --project_id=pocloadaccount query --use_legacy_sql=false "SELECT 1"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
+
 
       # Run dbt debug to test configuration
       - name: Run dbt debug
