@@ -54,57 +54,57 @@ jobs:
                 keyfile: /home/runner/service-account-key.json
           EOF
 
-      - name: Verify keyfile and profiles.yml
-        run: |
-                echo "Checking keyfile and profiles.yml..."
-                ls -la /home/runner/service-account-key.json /home/runner/.dbt/profiles.yml
-                if [ -f /home/runner/service-account-key.json ]; then
-                  echo "Keyfile exists"
-                  echo "Keyfile size: $(wc -c < /home/runner/service-account-key.json) bytes"
-                  if jq -e . /home/runner/service-account-key.json >/dev/null; then
-                    echo "Keyfile is valid JSON"
-                    jq -r '.project_id' /home/runner/service-account-key.json | grep -q "pocloadaccount" && echo "Keyfile project_id matches pocaccount" || echo "Keyfile project_id mismatch"
-                    jq -r '.client_email' /home/runner/service-account-key.json | grep -q "@pocloadaccount.iam.gserviceaccount.com" && echo "Keyfile client_email matches pocaccount" || echo "Keyfile client_email mismatch"
-                  else
-                    echo "Keyfile is not valid JSON"
-                    exit 1
-                  fi
-                else
-                  echo "Keyfile not found"
-                  exit 1
-                fi
-                if [ -f /home/runner/.dbt/profiles.yml ]; then
-                  echo "profiles.yml exists"
-                  cat /home/runner/.dbt/profiles.yml
-                else
-                  echo "profiles.yml not found"
-                  exit 1
-                fi
+      # - name: Verify keyfile and profiles.yml
+      #   run: |
+      #           echo "Checking keyfile and profiles.yml..."
+      #           ls -la /home/runner/service-account-key.json /home/runner/.dbt/profiles.yml
+      #           if [ -f /home/runner/service-account-key.json ]; then
+      #             echo "Keyfile exists"
+      #             echo "Keyfile size: $(wc -c < /home/runner/service-account-key.json) bytes"
+      #             if jq -e . /home/runner/service-account-key.json >/dev/null; then
+      #               echo "Keyfile is valid JSON"
+      #               jq -r '.project_id' /home/runner/service-account-key.json | grep -q "pocloadaccount" && echo "Keyfile project_id matches pocaccount" || echo "Keyfile project_id mismatch"
+      #               jq -r '.client_email' /home/runner/service-account-key.json | grep -q "@pocloadaccount.iam.gserviceaccount.com" && echo "Keyfile client_email matches pocaccount" || echo "Keyfile client_email mismatch"
+      #             else
+      #               echo "Keyfile is not valid JSON"
+      #               exit 1
+      #             fi
+      #           else
+      #             echo "Keyfile not found"
+      #             exit 1
+      #           fi
+      #           if [ -f /home/runner/.dbt/profiles.yml ]; then
+      #             echo "profiles.yml exists"
+      #             cat /home/runner/.dbt/profiles.yml
+      #           else
+      #             echo "profiles.yml not found"
+      #             exit 1
+      #           fi
 
-      - name: Debug keyfile
-        run: |
-          ls -la ~/service-account-key.json
-          cat ~/service-account-key.json
-        env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      # - name: Debug keyfile
+      #   run: |
+      #     ls -la ~/service-account-key.json
+      #     cat ~/service-account-key.json
+      #   env:
+      #     GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
 
 
-      - name: Test keyfile with gcloud
-        run: |
-          gcloud auth activate-service-account --key-file=/home/runner/service-account-key.json
-          gcloud config set project pocloadaccount
-          bq --project_id=pocloadaccount query --use_legacy_sql=false "SELECT 1"
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
+      # - name: Test keyfile with gcloud
+      #   run: |
+      #     gcloud auth activate-service-account --key-file=/home/runner/service-account-key.json
+      #     gcloud config set project pocloadaccount
+      #     bq --project_id=pocloadaccount query --use_legacy_sql=false "SELECT 1"
+      #   env:
+      #     GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
 
 
       # Run dbt debug to test configuration
-      - name: Run dbt debug
-        run: dbt debug
-        working-directory: ./proj_dbt/dbt_pizza
-        env:
-          DBT_PROFILES_DIR: /home/runner/.dbt
-          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
+      # - name: Run dbt debug
+      #   run: dbt debug
+      #   working-directory: ./proj_dbt/dbt_pizza
+      #   env:
+      #     DBT_PROFILES_DIR: /home/runner/.dbt
+      #     GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
 
       - name: Install SQLFluff
         run: pip install sqlfluff sqlfluff-templater-dbt
@@ -127,13 +127,38 @@ jobs:
           DBT_PROFILES_DIR: /home/runner/.dbt
           GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
 
+      # - name: Run Recce validation
+      #   run: recce run --output recce-state.json
+      #   working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+
+      # - name: Generate Recce summary
+      #   run: recce summary recce-state.json
+      #   working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+
+
       - name: Run Recce validation
-        run: recce run --output recce-state.json
+        run: |
+          GOOGLE_APPLICATION_CREDENTIALS=/home/runner/service-account-key.json \
+          recce run --profiles-dir /home/runner/.dbt --output recce-state.json
         working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+        env:
+          DBT_PROFILES_DIR: /home/runner/.dbt
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
 
       - name: Generate Recce summary
-        run: recce summary recce-state.json
+        run: |
+          GOOGLE_APPLICATION_CREDENTIALS=/home/runner/service-account-key.json \
+          recce summary recce-state.json
         working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+        env:
+          DBT_PROFILES_DIR: /home/runner/.dbt
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
+
+
+
+
+
+
 
       # # Install dbt dependencies
       # - name: Install dbt dependencies
