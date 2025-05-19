@@ -1,93 +1,72 @@
-name: DBT CICD
+name: dbt CI/CD Pipeline
 
 on:
   push:
     branches:
-      - 7-integrate-piperider  
+      - main
   pull_request:
     branches:
-      - main  
+      - main
+      - dev
 
 jobs:
-  lint:
+  dbt-run:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      # Set up Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.12' # Choose a version compatible with dbt Core
 
-      # - name: Debug Environment Variables
-      #   run: env
-
-      - name: Debug GitHub Actions Workspace
+      # Install dbt Core and dependencies
+      - name: Install dbt
         run: |
-          echo "RUNNER_WORKSPACE is at: $RUNNER_WORKSPACE"
-          ls -R $RUNNER_WORKSPACE
+          pip install dbt-bigquery 
+          dbt --version
 
-      - name: Install SQLFluff
-        run: pip install sqlfluff sqlfluff-templater-dbt dbt-bigquery
-
-      - name: Set dbt environment variables persistently
+      # Create profiles.yml
+      - name: Configure dbt profiles
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo "DBT_PROFILES_DIR=/home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt" >> $GITHUB_ENV
-          echo "DBT_PROJECT_DIR=/home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza" >> $GITHUB_ENV
+          mkdir -p ~/.dbt
+          echo "$GCP_CREDENTIALS" > ~/service-account-key.json
+          cat <<EOF > ~/.dbt/profiles.yml
+          dbt_pizza:
+            target: dev
+            outputs:
+              dev:
+                dataset: pizza
+                job_execution_timeout_seconds: 150
+                job_retries: 1
+                location: northamerica-northeast1
+                method: service-account
+                priority: interactive
+                project: pocloadaccount
+                threads: 4
+                type: bigquery
+                keyfile: ~/service-account-key.json
+          EOF
 
-      - name: Debug Environment Variables
-        run: env | grep DBT
+      # Install dbt dependencies
+      - name: Install dbt dependencies
+        run: dbt deps
+        working-directory: ./proj_dbt/dbt_pizza # Adjust if dbt_project is in a subdirectory
 
-      # - name: Set dbt paths
-      #   run: |
-      #     export DBT_PROFILES_DIR=$RUNNER_WORKSPACE/proj_dbt
-      #     export DBT_PROJECT_DIR=$RUNNER_WORKSPACE/proj_dbt/dbt_pizza
-        
-      # - name: Verify dbt files
-      #   run: ls -R /home/runner/work/bigquery_dwh/proj_dbt/dbt_pizza
+      # Run dbt tests
+      - name: Run dbt tests
+        run: dbt test
+        working-directory: ./proj_dbt/dbt_pizza
 
-      - name: Run SQLFluff linting
-        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
-
-  # recce-summary:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.12"
-
-  #     - name: Install dependencies
-  #       run: |
-  #         pip install --upgrade pip
-  #         pip install packaging dbt-core dbt-bigquery recce agate
-
-  #     - name: Generate Recce summary
-  #       run: recce summary recce-state.json
-  #       working-directory: ./proj_dbt/dbt_pizza/
-
-#####   above this runs, but was disabled for testing
-
-
-
-
-
-      # - name: Run dbt compilation (required for Recce)
-      #   run: dbt compile
-      #   working-directory: ./proj_dbt/dbt_pizza/
-      
-      # - name: Run Recce validation
-      #   run: recce run --output recce-state.json
-      #   working-directory: ./proj_dbt/dbt_pizza/
-
-
-
-      #  run: recce run --output recce-state.json --profiles-dir ./proj_dbt
-      # pip install packaging dbt-core dbt-bigquery recce agate
-      #   
+      # Run dbt build (combines run + test + compile)
+      - name: Run dbt build
+        run: dbt build
+        working-directory: ./proj_dbt/dbt_pizza
+        env:
+          DBT_PROFILES_DIR: ~/.dbt
