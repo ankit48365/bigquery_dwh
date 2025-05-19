@@ -63,8 +63,8 @@ jobs:
                   echo "Keyfile size: $(wc -c < /home/runner/service-account-key.json) bytes"
                   if jq -e . /home/runner/service-account-key.json >/dev/null; then
                     echo "Keyfile is valid JSON"
-                    jq -r '.project_id' /home/runner/service-account-key.json | grep -q "pocaccount" && echo "Keyfile project_id matches pocaccount" || echo "Keyfile project_id mismatch"
-                    jq -r '.client_email' /home/runner/service-account-key.json | grep -q "@pocaccount.iam.gserviceaccount.com" && echo "Keyfile client_email matches pocaccount" || echo "Keyfile client_email mismatch"
+                    jq -r '.project_id' /home/runner/service-account-key.json | grep -q "pocloadaccount" && echo "Keyfile project_id matches pocaccount" || echo "Keyfile project_id mismatch"
+                    jq -r '.client_email' /home/runner/service-account-key.json | grep -q "@pocloadaccount.iam.gserviceaccount.com" && echo "Keyfile client_email matches pocaccount" || echo "Keyfile client_email mismatch"
                   else
                     echo "Keyfile is not valid JSON"
                     exit 1
