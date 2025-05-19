@@ -111,7 +111,9 @@ jobs:
 
       - name: Run SQLFluff linting
         run: sqlfluff lint ./proj_dbt/dbt_pizza/models/
-
+        env:
+          DBT_PROFILES_DIR: /home/runner/.dbt
+          DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
 
       # # Install dbt dependencies
       # - name: Install dbt dependencies
