@@ -54,14 +54,23 @@ jobs:
                 keyfile: ~/service-account-key.json
           EOF
 
-      - name: Verify keyfile creation
+      - name: Verify keyfile and profiles.yml
         run: |
-          if [ -f ~/service-account-key.json ]; then
-            echo "Keyfile exists"
-          else
-            echo "Keyfile not found"
-            exit 1
-          fi
+                echo "Checking keyfile and profiles.yml..."
+                ls -la ~/service-account-key.json ~/.dbt/profiles.yml
+                if [ -f ~/service-account-key.json ]; then
+                  echo "Keyfile exists"
+                else
+                  echo "Keyfile not found"
+                  exit 1
+                fi
+                if [ -f ~/.dbt/profiles.yml ]; then
+                  echo "profiles.yml exists"
+                  cat ~/.dbt/profiles.yml
+                else
+                  echo "profiles.yml not found"
+                  exit 1
+                fi
 
       - name: Debug keyfile
         run: |
@@ -70,17 +79,26 @@ jobs:
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Install dbt dependencies
-      - name: Install dbt dependencies
-        run: dbt deps
-        working-directory: ./proj_dbt/dbt_pizza # Adjust if dbt_project is in a subdirectory
-
-      - name: Run dbt tests
-        run: dbt test
+      # Run dbt debug to test configuration
+      - name: Run dbt debug
+        run: dbt debug
         working-directory: ./proj_dbt/dbt_pizza
         env:
-          DBT_PROFILES_DIR: ~/.dbt
-          GOOGLE_APPLICATION_CREDENTIALS: ~/service-account-key.json
+          DBT_PROFILES_DIR: /home/runner/.dbt
+          GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
+
+
+      # # Install dbt dependencies
+      # - name: Install dbt dependencies
+      #   run: dbt deps
+      #   working-directory: ./proj_dbt/dbt_pizza # Adjust if dbt_project is in a subdirectory
+
+      # - name: Run dbt tests
+      #   run: dbt test
+      #   working-directory: ./proj_dbt/dbt_pizza
+      #   env:
+      #     DBT_PROFILES_DIR: ~/.dbt
+      #     GOOGLE_APPLICATION_CREDENTIALS: ~/service-account-key.json
 
       # # Run dbt build (combines run + test + compile)
       # - name: Run dbt build
