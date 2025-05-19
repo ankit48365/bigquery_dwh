@@ -57,16 +57,25 @@ jobs:
       - name: Verify keyfile and profiles.yml
         run: |
                 echo "Checking keyfile and profiles.yml..."
-                ls -la ~/service-account-key.json ~/.dbt/profiles.yml
-                if [ -f ~/service-account-key.json ]; then
+                ls -la /home/runner/service-account-key.json /home/runner/.dbt/profiles.yml
+                if [ -f /home/runner/service-account-key.json ]; then
                   echo "Keyfile exists"
+                  echo "Keyfile size: $(wc -c < /home/runner/service-account-key.json) bytes"
+                  if jq -e . /home/runner/service-account-key.json >/dev/null; then
+                    echo "Keyfile is valid JSON"
+                    jq -r '.project_id' /home/runner/service-account-key.json | grep -q "pocaccount" && echo "Keyfile project_id matches pocaccount" || echo "Keyfile project_id mismatch"
+                    jq -r '.client_email' /home/runner/service-account-key.json | grep -q "@pocaccount.iam.gserviceaccount.com" && echo "Keyfile client_email matches pocaccount" || echo "Keyfile client_email mismatch"
+                  else
+                    echo "Keyfile is not valid JSON"
+                    exit 1
+                  fi
                 else
                   echo "Keyfile not found"
                   exit 1
                 fi
-                if [ -f ~/.dbt/profiles.yml ]; then
+                if [ -f /home/runner/.dbt/profiles.yml ]; then
                   echo "profiles.yml exists"
-                  cat ~/.dbt/profiles.yml
+                  cat /home/runner/.dbt/profiles.yml
                 else
                   echo "profiles.yml not found"
                   exit 1

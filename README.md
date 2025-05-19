@@ -81,3 +81,4 @@ lint
 sqlfluff lint models/
 sqlfluff fix models/
 ```
+
