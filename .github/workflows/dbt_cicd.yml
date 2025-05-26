@@ -3,7 +3,7 @@ name: dbt CI/CD Pipeline
 on:
   push:
     branches:
-      - 7-integrate-piperider
+      - main
   pull_request:
     branches:
       - main
