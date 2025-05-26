@@ -1,7 +1,0 @@
-[sqlfluff]
-templater = dbt
-dialect = bigquery
-
-[templater.dbt]
-project_dir = ./proj_dbt/dbt_pizza
-profiles_dir = ~/.dbt
