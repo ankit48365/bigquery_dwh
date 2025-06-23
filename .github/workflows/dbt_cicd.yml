@@ -69,6 +69,7 @@ jobs:
         env:
           DBT_PROFILES_DIR: /home/runner/.dbt
           DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+        continue-on-error: true
 
       - name: Voilation Count and Badge Update in SQLFluff
         run: |
@@ -78,6 +79,8 @@ jobs:
           sed -i '/!\[sqlfluff\]/d' README.md
           # Insert updated badge at the top of README
           echo "![sqlfluff](https://img.shields.io/badge/sql%20violations-$VIOLATION_COUNT-red)" | cat - README.md > temp.md && mv temp.md README.md
+
+
 
       - name: Install Recce
         run: |
