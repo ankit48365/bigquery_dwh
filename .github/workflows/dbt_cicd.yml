@@ -54,58 +54,6 @@ jobs:
                 keyfile: /home/runner/service-account-key.json
           EOF
 
-      # - name: Verify keyfile and profiles.yml
-      #   run: |
-      #           echo "Checking keyfile and profiles.yml..."
-      #           ls -la /home/runner/service-account-key.json /home/runner/.dbt/profiles.yml
-      #           if [ -f /home/runner/service-account-key.json ]; then
-      #             echo "Keyfile exists"
-      #             echo "Keyfile size: $(wc -c < /home/runner/service-account-key.json) bytes"
-      #             if jq -e . /home/runner/service-account-key.json >/dev/null; then
-      #               echo "Keyfile is valid JSON"
-      #               jq -r '.project_id' /home/runner/service-account-key.json | grep -q "pocloadaccount" && echo "Keyfile project_id matches pocaccount" || echo "Keyfile project_id mismatch"
-      #               jq -r '.client_email' /home/runner/service-account-key.json | grep -q "@pocloadaccount.iam.gserviceaccount.com" && echo "Keyfile client_email matches pocaccount" || echo "Keyfile client_email mismatch"
-      #             else
-      #               echo "Keyfile is not valid JSON"
-      #               exit 1
-      #             fi
-      #           else
-      #             echo "Keyfile not found"
-      #             exit 1
-      #           fi
-      #           if [ -f /home/runner/.dbt/profiles.yml ]; then
-      #             echo "profiles.yml exists"
-      #             cat /home/runner/.dbt/profiles.yml
-      #           else
-      #             echo "profiles.yml not found"
-      #             exit 1
-      #           fi
-
-      # - name: Debug keyfile
-      #   run: |
-      #     ls -la ~/service-account-key.json
-      #     cat ~/service-account-key.json
-      #   env:
-      #     GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-
-
-      # - name: Test keyfile with gcloud
-      #   run: |
-      #     gcloud auth activate-service-account --key-file=/home/runner/service-account-key.json
-      #     gcloud config set project pocloadaccount
-      #     bq --project_id=pocloadaccount query --use_legacy_sql=false "SELECT 1"
-      #   env:
-      #     GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
-
-
-      # Run dbt debug to test configuration
-      # - name: Run dbt debug
-      #   run: dbt debug
-      #   working-directory: ./proj_dbt/dbt_pizza
-      #   env:
-      #     DBT_PROFILES_DIR: /home/runner/.dbt
-      #     GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
-
       - name: Install SQLFluff
         run: pip install sqlfluff sqlfluff-templater-dbt
 
@@ -114,6 +62,21 @@ jobs:
         env:
           DBT_PROFILES_DIR: /home/runner/.dbt
           DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+
+      - name: Run SQLFluff linting
+        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/ > sqlfluff_report.txt || true
+        env:
+          DBT_PROFILES_DIR: /home/runner/.dbt
+          DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+
+      - name: Voilation Count and Badge Update in SQLFluff
+        run: |
+          VIOLATION_COUNT=$(grep -A 1 '==== summary ====' sqlfluff_report.txt | grep -oP 'violations:\s+\K\d+')
+          echo "SQLFluff Violations: $VIOLATION_COUNT"
+          # Remove existing SQLFluff badge if it exists
+          sed -i '/!\[sqlfluff\]/d' README.md
+          # Insert updated badge at the top of README
+          echo "![sqlfluff](https://img.shields.io/badge/sql%20violations-$VIOLATION_COUNT-red)" | cat - README.md > temp.md && mv temp.md README.md
 
       - name: Install Recce
         run: |

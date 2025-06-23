@@ -1,3 +1,6 @@
+![CurrentLocal](https://img.shields.io/badge/machine-Latitude-brightgreen)
+
+
 <h2>Google Big Query - Data Platform</h2>
 Tech Stack used in this Project
 <div style="text-align: center;">
@@ -75,10 +78,11 @@ bq extract --destination_format=CSV pizza.denormalize gs://anki_pizza_bucket/den
 gsutil cp gs://anki_pizza_bucket/denormalize.csv denormalize.csv
 ```
 
-lint 
+lint {be in the directory, where /models is visible}
 
 ```
-sqlfluff lint models/
+sqlfluff lint models/  
+ssqlfluff lint -v models/
 sqlfluff fix models/
 ```
 
