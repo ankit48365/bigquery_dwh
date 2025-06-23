@@ -70,11 +70,12 @@ jobs:
         run: |
           VIOLATION_COUNT=$(grep -A 1 '==== summary ====' sqlfluff_report.txt | grep -oP 'violations:\s+\K\d+')
           echo "SQLFluff Violations: $VIOLATION_COUNT"
-          # Remove existing SQLFluff badge if it exists
+          # Remove existing SQLFluff badge
           sed -i '/!\[sqlfluff\]/d' README.md
-          # Insert updated badge at the top of README
-          echo "![sqlfluff](https://img.shields.io/badge/sql%20violations-$VIOLATION_COUNT-red)" | cat - README.md > temp.md && mv temp.md README.md
-
+          # Create a new README with the badge prepended
+          echo -e "![sqlfluff](https://img.shields.io/badge/sql%20violations-$VIOLATION_COUNT-red)\n$(cat README.md)" > README.md.tmp
+          # Replace the original README with the updated one
+          mv README.md.tmp README.md
 
 
       - name: Install Recce
