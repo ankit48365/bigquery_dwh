@@ -1,3 +1,4 @@
+![sqlfluff](https://img.shields.io/badge/sql%20violations-11-red)
 ![CurrentLocal](https://img.shields.io/badge/machine-Latitude-brightgreen)
 
 
@@ -85,4 +86,3 @@ sqlfluff lint models/
 ssqlfluff lint -v models/
 sqlfluff fix models/
 ```
-
