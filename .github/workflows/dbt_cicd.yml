@@ -64,12 +64,20 @@ jobs:
           DBT_PROFILES_DIR: /home/runner/.dbt
           DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
 
+      # - name: Run SQLFluff linting
+      #   run: sqlfluff lint ./proj_dbt/dbt_pizza/models/ > sqlfluff_report.txt || true
+      #   env:
+      #     DBT_PROFILES_DIR: /home/runner/.dbt
+      #     DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
+      #   continue-on-error: true
+
       - name: Run SQLFluff linting
-        run: sqlfluff lint ./proj_dbt/dbt_pizza/models/ > sqlfluff_report.txt || true
+        run: |
+          bash -c "sqlfluff lint ./proj_dbt/dbt_pizza/models/ > sqlfluff_report.txt || true"
         env:
           DBT_PROFILES_DIR: /home/runner/.dbt
           DBT_PROJECT_DIR: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
-        continue-on-error: true
+
 
       - name: Voilation Count and Badge Update in SQLFluff
         run: |
