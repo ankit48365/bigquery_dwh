@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - 9-addbadges_sqllint
   pull_request:
     branches:
       - main
