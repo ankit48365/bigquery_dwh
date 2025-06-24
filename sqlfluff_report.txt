@@ -12,31 +12,10 @@ rules:                                all
 == [proj_dbt/dbt_pizza/models/gold/denormalize.sql] PASS
 == [proj_dbt/dbt_pizza/models/gold/salesman_track.sql] PASS
 == [proj_dbt/dbt_pizza/models/silver/stg_order_details.sql] PASS
-== [proj_dbt/dbt_pizza/models/silver/stg_orders.sql] FAIL
-L:   6 | P:   5 | LT09 | Select targets should be on a new line unless there is
-                       | only one select target. [layout.select_targets]
-L:   6 | P:   5 | ST06 | Select wildcards then simple targets before calculations
-                       | and aggregates. [structure.column_order]
-L:  14 | P:   1 | LT02 | Expected indent of 8 spaces. [layout.indent]
-L:  14 | P:  10 | LT04 | Found leading comma ','. Expected only trailing near
-                       | line breaks. [layout.commas]
-L:  14 | P:  11 | AL03 | Column expression without alias. Use explicit `AS`
-                       | clause. [aliasing.expression]
-L:  14 | P:  11 | LT01 | Expected single whitespace between comma ',' and numeric
-                       | literal. [layout.spacing]
-L:  14 | P:  13 | AL03 | Column expression without alias. Use explicit `AS`
-                       | clause. [aliasing.expression]
-L:  14 | P:  13 | LT01 | Expected single whitespace between comma ',' and numeric
-                       | literal. [layout.spacing]
-L:  14 | P:  15 | AL03 | Column expression without alias. Use explicit `AS`
-                       | clause. [aliasing.expression]
-L:  14 | P:  15 | LT01 | Expected single whitespace between comma ',' and numeric
-                       | literal. [layout.spacing]
-L:  14 | P:  16 | CV03 | Trailing comma in select statement forbidden
-                       | [convention.select_trailing_comma]
+== [proj_dbt/dbt_pizza/models/silver/stg_orders.sql] PASS
 == [proj_dbt/dbt_pizza/models/silver/stg_pizza_types.sql] PASS
 == [proj_dbt/dbt_pizza/models/silver/stg_pizzas.sql] PASS
 == [proj_dbt/dbt_pizza/models/silver/stg_salesman.sql] PASS
 ==== summary ====
-violations:       11 status:         FAIL
+violations:        0 status:         PASS
 All Finished!

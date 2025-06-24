@@ -1,4 +1,4 @@
-![sqlfluff](https://img.shields.io/badge/sql%20violations-11-red)
+![sqlfluff](https://img.shields.io/badge/sql%20violations-0-red)
 ![CurrentLocal](https://img.shields.io/badge/machine-Latitude-brightgreen)
 
 
