@@ -11,7 +11,6 @@ WITH base_orders AS (
         CONCAT(date, ' ', time) AS datetime_column,
         CURRENT_DATE() AS dbt_datecreated,
         CURRENT_TIME() AS dbt_timecreated
-         ,1,2,3,
     FROM {{ source('src_pizza', 'orders') }}
 )
 
