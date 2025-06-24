@@ -3,8 +3,7 @@ name: dbt CI/CD Pipeline
 on:
   push:
     branches:
-      - main
-      - 9-addbadges_sqllint
+      - "**"  # This pattern means any branch
   pull_request:
     branches:
       - main
@@ -72,8 +71,18 @@ jobs:
           echo "SQLFluff Violations: $VIOLATION_COUNT"
           # Remove existing SQLFluff badge
           sed -i '/!\[sqlfluff\]/d' README.md
+
+          #Badge Color Logic
+          if (( $(echo "$VIOLATION_COUNT <= 3.0" | bc -l) )); then
+            COLOR="green"
+          elif (( $(echo "$VIOLATION_COUNT <= 6.0" | bc -l) )); then
+            COLOR="yellow"
+          else
+            COLOR="red"
+          fi
+
           # Create a new README with the badge prepended
-          echo -e "![sqlfluff](https://img.shields.io/badge/sql%20violations-$VIOLATION_COUNT-red)\n$(cat README.md)" > README.md.tmp
+          echo -e "![sqlfluff](https://img.shields.io/badge/sql%20violations-$VIOLATION_COUNT-$COLOR)\n$(cat README.md)" > README.md.tmp
           # Replace the original README with the updated one
           mv README.md.tmp README.md
 
