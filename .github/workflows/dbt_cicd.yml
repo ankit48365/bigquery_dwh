@@ -11,7 +11,7 @@ on:
       - dev
 
 jobs:
-  dbt-run:
+  recce_sqlfluff:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +28,8 @@ jobs:
       # Install dbt Core and dependencies
       - name: Install dbt
         run: |
-          pip install dbt-bigquery 
-          dbt --version
+          pip install dbt-bigquery > /dev/null # > /dev/null 2>&1 will hide even errors
+          dbt --version > /dev/null
 
       # Create profiles.yml
       - name: Configure dbt profiles
@@ -56,7 +56,7 @@ jobs:
           EOF
 
       - name: Install SQLFluff
-        run: pip install sqlfluff sqlfluff-templater-dbt
+        run: pip install sqlfluff sqlfluff-templater-dbt > /dev/null
 
 
       - name: Run SQLFluff linting
@@ -77,11 +77,11 @@ jobs:
           # Replace the original README with the updated one
           mv README.md.tmp README.md
 
-      - name: Commit and Push README update
+      - name: Commit and Push README update 
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
+          git add README.md sqlfluff_report.txt
           git commit -m "Update SQLFluff badge in README [skip ci]" || echo "No changes to commit"
           git push
         env:
@@ -89,8 +89,8 @@ jobs:
 
       - name: Install Recce
         run: |
-          pip install --upgrade pip
-          pip install packaging recce agate
+          pip install --upgrade pip > /dev/null
+          pip install packaging recce agate > /dev/null
 
       - name: Run dbt compilation (required for Recce)
         run: dbt compile
@@ -98,14 +98,6 @@ jobs:
         env:
           DBT_PROFILES_DIR: /home/runner/.dbt
           GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
-
-      # - name: Run Recce validation
-      #   run: recce run --output recce-state.json
-      #   working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
-
-      # - name: Generate Recce summary
-      #   run: recce summary recce-state.json
-      #   working-directory: /home/runner/work/bigquery_dwh/bigquery_dwh/proj_dbt/dbt_pizza
 
 
       - name: Run Recce validation
@@ -125,28 +117,3 @@ jobs:
         env:
           DBT_PROFILES_DIR: /home/runner/.dbt
           GOOGLE_APPLICATION_CREDENTIALS: /home/runner/service-account-key.json
-
-
-
-
-
-
-
-      # # Install dbt dependencies
-      # - name: Install dbt dependencies
-      #   run: dbt deps
-      #   working-directory: ./proj_dbt/dbt_pizza # Adjust if dbt_project is in a subdirectory
-
-      # - name: Run dbt tests
-      #   run: dbt test
-      #   working-directory: ./proj_dbt/dbt_pizza
-      #   env:
-      #     DBT_PROFILES_DIR: ~/.dbt
-      #     GOOGLE_APPLICATION_CREDENTIALS: ~/service-account-key.json
-
-      # # Run dbt build (combines run + test + compile)
-      # - name: Run dbt build
-      #   run: dbt build
-      #   working-directory: ./proj_dbt/dbt_pizza
-      #   env:
-      #     DBT_PROFILES_DIR: ~/.dbt
